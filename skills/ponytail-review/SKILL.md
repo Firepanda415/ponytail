@@ -1,57 +1,61 @@
 ---
 name: ponytail-review
 description: >
-  Code review focused exclusively on over-engineering. Finds what to delete:
+  Code review focused on over-engineering while preserving behavior,
+  scientific meaning, and resource constraints. Finds what to delete:
   reinvented standard library, unneeded dependencies, speculative abstractions,
   dead flexibility. One line per finding: location, what to cut, what replaces
   it. Use when the user says "review for over-engineering", "what can we
   delete", "is this over-engineered", "simplify review", or invokes
-  /ponytail-review. Complements correctness-focused review, this one only
-  hunts complexity.
+  /ponytail-review. Complements a general correctness review; it recommends
+  only simplifications whose affected contracts are preserved.
 ---
 
-Review diffs for unnecessary complexity. One line per finding: location, what
-to cut, what replaces it. The diff's best outcome is getting shorter.
+Review diffs for unnecessary complexity. Trace relevant callers and obligations
+before recommending a cut. Prefer fewer maintenance concepts within the required
+behavior, numerical accuracy, runtime, memory, and scaling constraints.
 
 ## Format
 
 `L<line>: <tag> <what>. <replacement>.`, or `<file>:L<line>: ...` for
-multi-file diffs.
+multi-file diffs. Include the decisive evidence or limitation when needed to
+make the recommendation reviewable; do not force a consequential finding into
+one line.
 
 Tags:
 
 - `delete:` dead code, unused flexibility, speculative feature. Replacement: nothing.
 - `stdlib:` hand-rolled thing the standard library ships. Name the function.
 - `native:` dependency or code doing what the platform already does. Name the feature.
-- `yagni:` abstraction with one implementation, config nobody sets, layer with one caller.
-- `shrink:` same logic, fewer lines. Show the shorter form.
+- `yagni:` flexibility without a current consumer or requirement. A single
+  implementation or caller is a lead, not proof that an abstraction is useless.
+- `shrink:` simpler logic with equivalent required semantics and suitable
+  resource cost. Show the simpler form.
 
 ## Examples
 
-❌ "This EmailValidator class might be more complex than necessary, have you
-considered whether all these validation rules are needed at this stage?"
+`L4: native: moment.js used only for a locale date label. Intl.DateTimeFormat preserves the configured locale and timezone; remove the dependency if no other consumer remains.`
 
-✅ `L12-38: stdlib: 27-line validator class. "@" in email, 1 line, real validation is the confirmation mail.`
+`repo.py:L88: delete: private forwarding method with no callers or registration path. Remove it; the underlying operation remains available.`
 
-✅ `L4: native: moment.js imported for one format call. Intl.DateTimeFormat, 0 deps.`
+`L30-44: shrink: loop copies key/value pairs without transformation. dict(pairs) preserves duplicate-key behavior and the required memory bound.`
 
-✅ `repo.py:L88: yagni: AbstractRepository with one implementation. Inline it until a second one exists.`
+## Conclusion
 
-✅ `L52-71: delete: retry wrapper around an idempotent local call. Nothing replaces it.`
+Report the meaningful burden removed. Include proposed line or dependency
+reductions only when verified and useful; they are not the objective or evidence
+of runtime improvement.
 
-✅ `L30-44: shrink: manual loop builds dict. dict(zip(keys, values)), 1 line.`
-
-## Scoring
-
-End with the only metric that matters: `net: -<N> lines possible.`
-
-If there is nothing to cut, say `Lean already. Ship.` and stop.
+If no justified cut is found, say so within the reviewed scope; this does not
+certify the code's overall correctness or readiness to ship.
 
 ## Boundaries
 
-Scope: over-engineering and complexity only. Correctness bugs, security holes,
-and performance are explicitly out of scope. Route them to a normal review
-pass, not this one. A single smoke test or `assert`-based
-self-check is the ponytail minimum, not bloat, never flag it for deletion.
+Scope: simplification findings. Check the correctness, scientific, security,
+and resource consequences of every proposed deletion; independent defects may
+be routed to a normal review. Preserve numerical conventions, optimized kernels,
+required boundary validation, and sufficient independent evidence. A test's
+value depends on the failure it detects, not its count or syntax; recommend
+removal only when its obligation is obsolete or adequately covered elsewhere.
 Does not apply the fixes, only lists them.
 "stop ponytail-review" or "normal mode": revert to verbose review style.

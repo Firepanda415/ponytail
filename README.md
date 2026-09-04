@@ -94,16 +94,19 @@ This showed **80-94% less code**. [#126](https://github.com/DietrichGebert/ponyt
 
 ## How it works
 
-Before writing code, the agent stops at the first rung that holds:
+This fork keeps the simplest implementation that meets the task's correctness,
+accuracy, runtime, memory, and scaling requirements. The benchmark results above
+describe upstream versions and have not been rerun for this customized guidance.
+
+After reading the relevant code and callers, choose within those constraints:
 
 ```
 1. Does this need to exist?   → no: skip it (YAGNI)
 2. Already in this codebase?  → reuse it, don't rewrite
-3. Stdlib does it?            → use it
-4. Native platform feature?   → use it
-5. Installed dependency?      → use it
-6. One line?                  → one line
-7. Only then: the minimum that works
+3. Established numerical kernel? → reuse the optimized implementation
+4. Stdlib/native glue code?   → use it
+5. Installed dependency?      → reuse it when suitable
+6. Direct implementation?     → write only what the task needs
 ```
 
 The ladder runs *after* it understands the problem, not instead of it: it reads the code the change touches and traces the real flow before picking a rung. Lazy about the solution, never about reading.
@@ -114,7 +117,11 @@ Lazy, not negligent: trust-boundary validation, data-loss handling, security, an
 
 The most effort ponytail will ever ask of you:
 
-The Claude Code and Codex plugins run two tiny Node.js lifecycle hooks, so `node` needs to be on your PATH (note for Nix/nvm users: it must be on the non-interactive shell's PATH). If it isn't, the skills still work, the always-on activation just stays quiet instead of erroring on every prompt.
+The Claude Code and Codex plugins register three Node.js hooks: `SessionStart`,
+`SubagentStart`, and `UserPromptSubmit`. The first two read the core skill through
+`hooks/ponytail-instructions.js`; the third tracks mode commands. The builder has
+compact fallback instructions if the skill cannot be read. `node` must be on the
+non-interactive shell's PATH.
 
 ### Claude Code
 
@@ -131,11 +138,15 @@ Same steps in the Claude Code Desktop app's Code tab: type the two `/plugin` com
 ### Codex
 
 ```bash
-codex plugin marketplace add DietrichGebert/ponytail
+codex plugin marketplace add /path/to/your/ponytail-checkout
 codex plugin add ponytail@ponytail
 ```
 
-Run `codex` and open `/hooks`, review and trust its two lifecycle hooks, and start a new thread.
+The fork's Codex marketplace uses its own local source. After changing it, run
+`codex plugin add ponytail@ponytail` again and start a new task. If `ponytail` was
+previously configured from upstream, remove that marketplace registration before
+adding this checkout. Run `codex` and open `/hooks` to review any hooks marked as
+needing trust; do not bypass hook trust.
 
 This same install also covers the Codex desktop app: restart the app after installing and it picks up the plugin.
 

@@ -1,9 +1,10 @@
 ---
 name: ponytail-gain
 description: >
-  Show ponytail's measured impact as a compact scoreboard: less code, less
-  cost, more speed, from the benchmark medians. One-shot display, not a
-  persistent mode, and not a per-repo number. Trigger: /ponytail-gain,
+  Show historical upstream Ponytail benchmark results as a compact scoreboard
+  with their measured scope. These do not validate this customized fork or
+  predict savings on the current repository. One-shot display, not a persistent
+  mode. Trigger: /ponytail-gain,
   "ponytail gain", "what does ponytail save", "show ponytail impact",
   "ponytail scoreboard".
 ---
@@ -13,36 +14,38 @@ description: >
 Display this scoreboard when invoked. One-shot: do NOT change mode, write flag
 files, or persist anything.
 
-The figures are the published benchmark medians (5 everyday tasks: email
-validator, debounce, CSV sum, countdown timer, rate limiter; three models:
-Haiku, Sonnet, Opus). They are measured, not computed from the current repo.
-Source: `benchmarks/` and the README.
+The figures below are historical upstream results from
+`benchmarks/results/2026-06-18-agentic.md`: 12 feature tasks on a FastAPI + React
+repository, Haiku 4.5, four runs per task and arm, means relative to a no-skill
+baseline. They predate this fork's customized instructions. Display the card
+without rerunning benchmarks.
 
 ## Scoreboard
 
-Render plain ASCII bars. The bar length shows the measured range; the label
-carries the exact figure:
+**Historical upstream benchmark — 2026-06-18**
 
-```
-  ponytail gain                     benchmark median · 5 tasks · 3 models
+| Measured quantity | Change from no-skill baseline |
+|---|---:|
+| Added code lines | −54% |
+| Agent session cost | −20% |
+| Agent session elapsed time | −27% |
 
-  Lines of code   no-skill  ████████████████████  100%
-                  ponytail  ██▌·················    6–20%   ▼ 80–94%
-  Cost            no-skill  ████████████████████  100%
-                  ponytail  █████▌··············   23–53%  ▼ 47–77%
-  Speed           ponytail  ▸ 3–6× faster
-
-  This repo:  /ponytail-debt  (shortcuts you deferred)
-              /ponytail-audit (what's still cuttable)
-```
+12 feature tasks · Haiku 4.5 · 4 runs per task/arm · means.
+This measures code generation sessions, not the runtime or memory of the
+produced software. It is not validation of this customized fork.
 
 ## Honesty boundary
 
-These are benchmark medians, not this repo. NEVER print a per-repo savings
-number ("you saved X lines/tokens here"): the unbuilt version was never
-written, so there is no real baseline to subtract from in a live repo. The
-only real per-repo figures come from `/ponytail-debt` (a counted ledger), and
-this card points there instead of inventing one.
+Do not present the old single-shot 80–94% reduction as a general effect: the
+upstream report identifies a conversational-baseline artifact. Even the later
+agentic results cover one model and a small task set; they do not establish
+quantum-workload performance, general correctness, or universal savings.
+
+Do not invent a per-repository counterfactual such as “you saved X lines/tokens”
+when the no-skill version was never run. A current comparison needs a real
+baseline, matching workload, and measured quantities. `/ponytail-debt` counts
+recorded shortcuts; `/ponytail-audit` identifies possible simplifications.
+Neither measures realized savings.
 
 ## Boundaries
 

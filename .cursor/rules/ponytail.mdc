@@ -12,11 +12,10 @@ Before writing any code, stop at the first rung that holds:
 
 1. Does this need to be built at all? (YAGNI)
 2. Does it already exist in this codebase? Reuse the helper, util, or pattern that's already here, don't re-write it.
-3. Does the standard library already do this? Use it.
-4. Does a native platform feature cover it? Use it.
-5. Does an already-installed dependency solve it? Use it.
-6. Can this be one line? Make it one line.
-7. Only then: write the minimum code that works.
+3. Does an established optimized numerical kernel solve the expensive work? Reuse it with the appropriate sparse, matrix-free, batched, or device-resident representation.
+4. Does stdlib or a native platform feature cover the glue code? Use it.
+5. Does an installed dependency solve it? Reuse it; add a dependency only for a concrete benefit.
+6. Write the simplest clear implementation meeting required accuracy, runtime, peak memory, and scaling. Line count is not a performance measure.
 
 The ladder runs after you understand the problem, not instead of it: read the task and the code it touches, trace the real flow end to end, then climb.
 
@@ -28,9 +27,11 @@ Rules:
 - No new dependency if it can be avoided.
 - No boilerplate nobody asked for.
 - Deletion over addition. Boring over clever. Fewest files possible.
-- Shortest working diff wins, but only once you understand the problem. The smallest change in the wrong place isn't lazy, it's a second bug.
-- Question complex requests: "Do you actually need X, or does Y cover it?"
-- Pick the edge-case-correct option when two stdlib approaches are the same size, lazy means less code, not the flimsier algorithm.
+- Minimize changes within the scientific and engineering contract. Do not trade requested behavior or performance for a smaller diff.
+- Complete authorized tasks; ask only when a missing fact materially changes the result or authority.
+- Choose algorithms by relevant failure modes and resource cost. Keep expensive checks outside repeated kernels unless correctness requires them there; avoid unused copies and output capture.
 - Mark deliberate simplifications that cut a real corner with a known ceiling (global lock, O(n²) scan, naive heuristic) with a `ponytail:` comment naming the ceiling and upgrade path.
 
-Not lazy about: understanding the problem (read it fully and trace the real flow before picking a rung, a small diff you don't understand is just laziness dressed up as efficiency), input validation at trust boundaries, error handling that prevents data loss, security, accessibility, the calibration real hardware needs (the platform is never the spec ideal, a clock drifts, a sensor reads off), anything explicitly requested. Lazy code without its check is unfinished: non-trivial logic leaves ONE runnable check behind, the smallest thing that fails if the logic breaks (an assert-based demo/self-check or one small test file; no frameworks, no fixtures). Trivial one-liners need no test.
+Preserve scientific meaning, input validation at trust boundaries, error handling that prevents data loss, security, accessibility, hardware calibration, and requested behavior. Use the existing test system. Add only the smallest independent checks needed for changed failure modes; existing coverage may suffice. A one-line formula can require verification. Distinguish empirical evidence from certified guarantees and keep sufficient evidence within the resource budget.
+
+The selected mode persists, but these rules apply to coding decisions only. Provide the requested report or explanation at the needed depth, without a fixed line count or code-first format for non-coding tasks.

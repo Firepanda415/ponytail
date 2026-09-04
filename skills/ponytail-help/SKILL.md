@@ -15,21 +15,28 @@ write flag files, or persist anything.
 
 | Level | Trigger | What change |
 |-------|---------|-------------|
-| **Lite** | `/ponytail lite` | Build what's asked, name the lazier alternative in one line. |
-| **Full** | `/ponytail` | The ladder enforced: YAGNI → stdlib → native → one line → minimum. Default. |
-| **Ultra** | `/ponytail ultra` | YAGNI extremist. Deletion before addition. Challenges requirements before building. |
+| **Lite** | `/ponytail lite` | Prefer a straightforward solution; mention alternatives when the tradeoff matters. |
+| **Full** | `/ponytail` | Use the simplest implementation meeting correctness and resource requirements. Default. |
+| **Ultra** | `/ponytail ultra` | Challenge accidental complexity more aggressively while completing requested behavior. |
 
-Level sticks until changed or session end.
+Level sticks until changed or session end and governs coding decisions, not the
+length or structure of paper reviews and research explanations.
+
+The ladder: establish behavior and data flow; avoid speculative work; reuse
+existing code and optimized numerical kernels; use stdlib/native facilities for
+glue code; reuse suitable dependencies; then write the simplest clear solution.
+Accuracy, runtime, peak memory, and scaling constrain every step. Verification
+follows changed failure modes rather than a fixed test count.
 
 ## Skills
 
 | Skill | Trigger | What it does |
 |-------|---------|--------------|
 | **ponytail** | `/ponytail` | Lazy mode itself. Simplest solution that works. |
-| **ponytail-review** | `/ponytail-review` | Over-engineering review: `L42: yagni: factory, one product. Inline.` |
-| **ponytail-audit** | `/ponytail-audit` | Whole-repo over-engineering audit: ranked list of what to delete. |
+| **ponytail-review** | `/ponytail-review` | Review a diff for justified simplifications that preserve its contracts. |
+| **ponytail-audit** | `/ponytail-audit` | Whole-repo audit of removable complexity and its consequences. |
 | **ponytail-debt** | `/ponytail-debt` | Harvest `ponytail:` shortcut comments into a tracked ledger. |
-| **ponytail-gain** | `/ponytail-gain` | Measured-impact scoreboard: less code, less cost, more speed. |
+| **ponytail-gain** | `/ponytail-gain` | Historical upstream benchmark scoreboard; not validation of this customized fork. |
 | **ponytail-help** | `/ponytail-help` | This card. |
 
 Codex uses `@ponytail`, `@ponytail-review`, and `@ponytail-help`; Claude Code
@@ -62,10 +69,13 @@ Resolution: env var > config file > `full`.
 
 ## Update
 
-Enable auto-update once: open `/plugin`, go to Marketplaces, pick ponytail, Enable auto-update. Claude Code then pulls new versions at startup (run `/reload-plugins` when it prompts). Manual refresh: `/plugin marketplace update ponytail` then `/reload-plugins`.
-
-If `/plugin` is not recognized, your Claude Code is out of date. Update it (`npm install -g @anthropic-ai/claude-code@latest`, or `brew upgrade claude-code`) and restart. Other hosts use their own update flow.
+For this fork's local Codex installation, edit the configured checkout, then run
+`codex plugin add ponytail@ponytail` and start a new task. Check the configured
+marketplace source before updating; an upstream source will not include local
+customizations. Other hosts use their own installation flow.
 
 ## More
 
-Full docs + examples: https://github.com/DietrichGebert/ponytail
+Fork: https://github.com/Firepanda415/ponytail
+
+Upstream documentation and historical examples: https://github.com/DietrichGebert/ponytail
