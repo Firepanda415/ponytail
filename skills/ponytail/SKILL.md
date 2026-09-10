@@ -44,10 +44,10 @@ trace when a shared owner or scientific transformation can affect other paths.
 Do not require an unrelated repository-wide audit for a local change.
 
 **Bug fix = root cause, not symptom.** A report names a symptom. Before you
-edit, grep every caller of the function you're about to touch. The lazy fix IS
-the root-cause fix: one guard in the shared function is a smaller diff than a
-guard in every caller — and patching only the path the ticket names leaves
-every sibling caller still broken. Fix it once, where all callers route through.
+edit, grep every caller of the function you're about to touch. Fix the
+representation, operation or lifecycle rule at the first owner that violates
+the intended relation, then check every affected caller. Keep the correction
+at that owner instead of patching the same symptom separately in each caller.
 
 ## Rules
 
