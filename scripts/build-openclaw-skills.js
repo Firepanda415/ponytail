@@ -2,8 +2,8 @@
 // Generate the OpenClaw / ClawHub skill package (.openclaw/skills/) from the
 // canonical skills/. OpenClaw skills are SKILL.md (frontmatter + body), the same
 // format ponytail already uses, with one difference: `description` must be a
-// single line under 160 chars. The canonical descriptions are long (tuned for
-// Claude's skill picker), so each ships a short one here. The body is copied
+// single line under 160 chars. Canonical descriptions may exceed that limit,
+// so each ships a compact variant here. The body is copied
 // verbatim from skills/<name>/SKILL.md so the ruleset never drifts; only the
 // frontmatter is rewritten.
 //

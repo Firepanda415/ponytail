@@ -1,18 +1,19 @@
 ---
 name: ponytail-audit
 description: >
-  Whole-repo audit for over-engineering. Like ponytail-review, but scans the
-  entire codebase instead of a diff: a ranked list of what to delete, simplify,
-  or replace with existing suitable facilities while preserving behavior,
-  scientific meaning, and resource constraints. Use when the user says "audit this
-  codebase", "audit for over-engineering", "what can I delete from this repo",
-  "find bloat", "ponytail-audit", or "/ponytail-audit". One-shot report, does
-  not apply fixes.
+  Audit a repository for over-engineering and justified deletions or
+  simplifications while preserving behavior, scientific meaning, and resource
+  constraints. Use for repo-wide simplification audits or /ponytail-audit.
+  Return a compact read-only report.
 ---
 
 ponytail-review, repo-wide. Cover the requested repository scope instead of a
 diff. Rank findings by justified maintenance benefit, confidence, and consequence,
 not deletion volume. Account for important uninspected surfaces.
+
+This is the compact read-only audit route. Reuse relevant evidence from an
+existing simplification review; do not start a second full audit merely because
+another installed skill covers the same outcome.
 
 ## Tags
 

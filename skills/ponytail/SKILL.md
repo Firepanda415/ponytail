@@ -1,12 +1,9 @@
 ---
 name: ponytail
 description: >
-  Keep coding changes simple while meeting correctness, accuracy, runtime,
-  memory, and scaling requirements. Use for implementation, debugging,
-  refactoring, code review, and dependency choices, or when the user invokes
-  Ponytail. Reuse existing code, avoid speculative abstractions, and verify
-  consequential changes. Supports lite, full, and ultra. Do not impose a coding
-  workflow on paper review, research discussion, summaries, or other prose.
+  Keep implementation, debugging, refactoring, and code review simple within
+  correctness, accuracy, runtime, memory, and scaling requirements. Use for
+  coding decisions or explicit Ponytail requests; exclude non-coding prose.
 argument-hint: "[lite|full|ultra]"
 license: MIT
 ---

@@ -9,6 +9,10 @@ ponytail-review, repo-wide. Cover the requested repository scope instead of a
 diff. Rank findings by justified maintenance benefit, confidence, and consequence,
 not deletion volume. Account for important uninspected surfaces.
 
+This is the compact read-only audit route. Reuse relevant evidence from an
+existing simplification review; do not start a second full audit merely because
+another installed skill covers the same outcome.
+
 ## Tags
 
 Same as ponytail-review:

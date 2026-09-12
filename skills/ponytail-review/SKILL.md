@@ -1,14 +1,9 @@
 ---
 name: ponytail-review
 description: >
-  Code review focused on over-engineering while preserving behavior,
-  scientific meaning, and resource constraints. Finds what to delete:
-  reinvented standard library, unneeded dependencies, speculative abstractions,
-  dead flexibility. One line per finding: location, what to cut, what replaces
-  it. Use when the user says "review for over-engineering", "what can we
-  delete", "is this over-engineered", "simplify review", or invokes
-  /ponytail-review. Complements a general correctness review; it recommends
-  only simplifications whose affected contracts are preserved.
+  Review a diff for over-engineering and justified simplifications while
+  preserving behavior, scientific meaning, and resource constraints. Use for
+  simplification reviews or /ponytail-review. Report findings without applying fixes.
 ---
 
 Review diffs for unnecessary complexity. Trace relevant callers and obligations
